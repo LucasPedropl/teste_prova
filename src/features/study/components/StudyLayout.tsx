@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { TopicViewer } from './TopicViewer';
@@ -6,19 +7,29 @@ import { PdfWorkspace } from './PdfWorkspace';
 import { topics } from '../../../data/topics';
 import { ChatWidget } from '../../chat/components/ChatWidget';
 import clsx from 'clsx';
+import { TextHighlighter } from './TextHighlighter';
 
 export function StudyLayout() {
-  const [selectedTopicId, setSelectedTopicId] = useState<string>(topics[0].id);
+  const { topicId } = useParams<{ topicId: string }>();
+  const navigate = useNavigate();
+  
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
+  const selectedTopicId = topicId || topics[0].id;
   const selectedTopic = topics.find(t => t.id === selectedTopicId);
+
+  const handleSelectTopic = (id: string) => {
+    navigate(`/topic/${id}`);
+    setIsSidebarOpen(false);
+  };
 
   return (
     <div className={clsx(
       "h-screen bg-slate-50 flex flex-col lg:grid overflow-hidden text-slate-700 font-sans relative transition-all duration-300",
       isSidebarCollapsed ? "lg:grid-cols-[80px_1fr]" : "lg:grid-cols-[260px_1fr]"
     )}>
+      <TextHighlighter />
       {/* Top Navigation Bar (Mobile) */}
       <header className="bg-white border-b border-slate-200 h-16 flex items-center px-4 shrink-0 lg:hidden z-30">
         <button
@@ -39,7 +50,7 @@ export function StudyLayout() {
       <Sidebar
         topics={topics}
         selectedTopicId={selectedTopicId}
-        onSelectTopic={setSelectedTopicId}
+        onSelectTopic={handleSelectTopic}
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
         isCollapsed={isSidebarCollapsed}
