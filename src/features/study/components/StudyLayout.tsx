@@ -3,15 +3,21 @@ import { Menu } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { TopicViewer } from './TopicViewer';
 import { topics } from '../../../data/topics';
+import { ChatWidget } from '../../chat/components/ChatWidget';
+import clsx from 'clsx';
 
 export function StudyLayout() {
   const [selectedTopicId, setSelectedTopicId] = useState<string>(topics[0].id);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const selectedTopic = topics.find(t => t.id === selectedTopicId) || topics[0];
 
   return (
-    <div className="h-screen bg-slate-50 flex flex-col lg:grid lg:grid-cols-[260px_1fr] overflow-hidden text-slate-700 font-sans">
+    <div className={clsx(
+      "h-screen bg-slate-50 flex flex-col lg:grid overflow-hidden text-slate-700 font-sans relative transition-all duration-300",
+      isSidebarCollapsed ? "lg:grid-cols-[80px_1fr]" : "lg:grid-cols-[260px_1fr]"
+    )}>
       {/* Top Navigation Bar (Mobile) */}
       <header className="bg-white border-b border-slate-200 h-16 flex items-center px-4 shrink-0 lg:hidden z-30">
         <button
@@ -35,11 +41,15 @@ export function StudyLayout() {
         onSelectTopic={setSelectedTopicId}
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
+        isCollapsed={isSidebarCollapsed}
+        setIsCollapsed={setIsSidebarCollapsed}
       />
       
-      <main className="flex-1 overflow-y-auto p-6 lg:p-10 flex flex-col gap-6">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10 flex flex-col gap-6">
         <TopicViewer topic={selectedTopic} />
       </main>
+
+      <ChatWidget />
     </div>
   );
 }
