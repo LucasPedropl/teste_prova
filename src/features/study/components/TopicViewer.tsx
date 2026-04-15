@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -7,6 +7,7 @@ import { topics } from '../../../data/topics';
 import { GoogleSearch } from '../../search/components/GoogleSearch';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { restoreHighlights } from '../utils/highlight';
 
 interface TopicViewerProps {
   topic: Topic;
@@ -18,6 +19,14 @@ export function TopicViewer({ topic }: TopicViewerProps) {
   const currentIndex = topics.findIndex(t => t.id === topic.id);
   const prevTopic = currentIndex > 0 ? topics[currentIndex - 1] : null;
   const nextTopic = currentIndex < topics.length - 1 ? topics[currentIndex + 1] : null;
+
+  useEffect(() => {
+    // We need a small timeout to ensure ReactMarkdown has finished rendering the DOM
+    const timer = setTimeout(() => {
+      restoreHighlights(topic.id);
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [topic.id]);
 
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-6 pb-10">
@@ -41,7 +50,7 @@ export function TopicViewer({ topic }: TopicViewerProps) {
           {topic.description}
         </p>
 
-        <div className="prose prose-slate prose-base sm:prose-lg max-w-none prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-a:text-blue-500 hover:prose-a:text-blue-600 prose-table:border-collapse prose-th:bg-slate-50 prose-th:p-3 sm:prose-th:p-4 prose-td:p-3 sm:prose-td:p-4 prose-td:border-t prose-th:border-t prose-th:border-slate-200 prose-td:border-slate-200 overflow-x-auto">
+        <div id="topic-content" className="prose prose-slate prose-base sm:prose-lg max-w-none prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-a:text-blue-500 hover:prose-a:text-blue-600 prose-table:border-collapse prose-th:bg-slate-50 prose-th:p-3 sm:prose-th:p-4 prose-td:p-3 sm:prose-td:p-4 prose-td:border-t prose-th:border-t prose-th:border-slate-200 prose-td:border-slate-200 overflow-x-auto">
           <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
             {topic.content}
           </Markdown>

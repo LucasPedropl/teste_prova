@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Highlighter } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { getSelectionOffsets, saveHighlight, applyHighlightByOffsets } from '../utils/highlight';
+import { topics } from '../../../data/topics';
 
 export function TextHighlighter() {
+  const { topicId } = useParams<{ topicId: string }>();
+  const activeTopicId = topicId || topics[0].id;
+  
   const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null);
   const [selectionRange, setSelectionRange] = useState<Range | null>(null);
 
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
       const selection = window.getSelection();
-      if (selection && selection.toString().trim().length > 0) {
+      const root = document.getElementById('topic-content');
+      
+      if (selection && selection.toString().trim().length > 0 && root && root.contains(selection.anchorNode)) {
         e.preventDefault();
         setMenuPos({ x: e.clientX, y: e.clientY });
         setSelectionRange(selection.getRangeAt(0).cloneRange());
@@ -35,31 +43,21 @@ export function TextHighlighter() {
 
   const applyHighlight = () => {
     if (!selectionRange) return;
+    
+    const root = document.getElementById('topic-content');
+    if (!root) return;
 
-    try {
-      const mark = document.createElement('mark');
-      mark.style.backgroundColor = '#fef08a'; // Tailwind yellow-200
-      mark.style.color = 'inherit';
-      mark.style.borderRadius = '2px';
-      mark.style.padding = '0 2px';
+    const { start, end } = getSelectionOffsets(root, selectionRange);
+    
+    if (start !== end) {
+      saveHighlight(activeTopicId, {
+        id: Date.now().toString(),
+        start,
+        end,
+        text: selectionRange.toString()
+      });
       
-      // Try surroundContents first (works if selection is within a single text node)
-      selectionRange.surroundContents(mark);
-    } catch (e) {
-      // Fallback for selections crossing node boundaries
-      try {
-        const mark = document.createElement('mark');
-        mark.style.backgroundColor = '#fef08a';
-        mark.style.color = 'inherit';
-        mark.style.borderRadius = '2px';
-        mark.style.padding = '0 2px';
-        
-        const contents = selectionRange.extractContents();
-        mark.appendChild(contents);
-        selectionRange.insertNode(mark);
-      } catch (err) {
-        console.error("Could not highlight selection", err);
-      }
+      applyHighlightByOffsets(root, start, end);
     }
     
     window.getSelection()?.removeAllRanges();
