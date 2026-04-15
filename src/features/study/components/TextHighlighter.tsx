@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Highlighter } from 'lucide-react';
+import { Highlighter, Eraser } from 'lucide-react';
 import { useParams } from 'react-router-dom';
-import { getSelectionOffsets, saveHighlight, applyHighlightByOffsets } from '../utils/highlight';
+import { getSelectionOffsets, saveHighlight, applyHighlightByOffsets, removeHighlight, removeHighlightElements } from '../utils/highlight';
 import { topics } from '../../../data/topics';
 
 export function TextHighlighter() {
@@ -10,9 +10,21 @@ export function TextHighlighter() {
   
   const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null);
   const [selectionRange, setSelectionRange] = useState<Range | null>(null);
+  const [targetHighlightId, setTargetHighlightId] = useState<string | null>(null);
 
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const markElement = target.closest('mark[data-highlight-id]');
+      
+      if (markElement) {
+        e.preventDefault();
+        setMenuPos({ x: e.clientX, y: e.clientY });
+        setTargetHighlightId((markElement as HTMLElement).dataset.highlightId || null);
+        setSelectionRange(null);
+        return;
+      }
+
       const selection = window.getSelection();
       const root = document.getElementById('topic-content');
       
@@ -20,9 +32,11 @@ export function TextHighlighter() {
         e.preventDefault();
         setMenuPos({ x: e.clientX, y: e.clientY });
         setSelectionRange(selection.getRangeAt(0).cloneRange());
+        setTargetHighlightId(null);
       } else {
         setMenuPos(null);
         setSelectionRange(null);
+        setTargetHighlightId(null);
       }
     };
 
@@ -50,19 +64,30 @@ export function TextHighlighter() {
     const { start, end } = getSelectionOffsets(root, selectionRange);
     
     if (start !== end) {
-      saveHighlight(activeTopicId, {
+      const newHighlight = {
         id: Date.now().toString(),
         start,
         end,
         text: selectionRange.toString()
-      });
+      };
       
-      applyHighlightByOffsets(root, start, end);
+      saveHighlight(activeTopicId, newHighlight);
+      applyHighlightByOffsets(root, start, end, newHighlight.id);
     }
     
     window.getSelection()?.removeAllRanges();
     setMenuPos(null);
     setSelectionRange(null);
+  };
+
+  const handleRemoveHighlight = () => {
+    if (!targetHighlightId) return;
+    
+    removeHighlight(activeTopicId, targetHighlightId);
+    removeHighlightElements(targetHighlightId);
+    
+    setMenuPos(null);
+    setTargetHighlightId(null);
   };
 
   if (!menuPos) return null;
@@ -72,13 +97,23 @@ export function TextHighlighter() {
       className="fixed z-50 bg-white border border-slate-200 shadow-lg rounded-md overflow-hidden py-1 min-w-[160px]"
       style={{ top: menuPos.y, left: menuPos.x }}
     >
-      <button 
-        onClick={applyHighlight}
-        className="flex items-center gap-3 px-4 py-2 hover:bg-slate-100 text-slate-700 text-sm w-full text-left transition-colors"
-      >
-        <Highlighter className="w-4 h-4 text-yellow-500" />
-        <span className="font-medium">Destacar Texto</span>
-      </button>
+      {targetHighlightId ? (
+        <button 
+          onClick={handleRemoveHighlight}
+          className="flex items-center gap-3 px-4 py-2 hover:bg-slate-100 text-slate-700 text-sm w-full text-left transition-colors"
+        >
+          <Eraser className="w-4 h-4 text-red-500" />
+          <span className="font-medium">Remover Destaque</span>
+        </button>
+      ) : (
+        <button 
+          onClick={applyHighlight}
+          className="flex items-center gap-3 px-4 py-2 hover:bg-slate-100 text-slate-700 text-sm w-full text-left transition-colors"
+        >
+          <Highlighter className="w-4 h-4 text-yellow-500" />
+          <span className="font-medium">Destacar Texto</span>
+        </button>
+      )}
     </div>
   );
 }

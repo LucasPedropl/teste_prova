@@ -23,6 +23,25 @@ export function saveHighlight(topicId: string, highlight: Highlight) {
   localStorage.setItem(`highlights_${topicId}`, JSON.stringify(highlights));
 }
 
+export function removeHighlight(topicId: string, id: string) {
+  const highlights = getHighlights(topicId);
+  const filtered = highlights.filter(h => h.id !== id);
+  localStorage.setItem(`highlights_${topicId}`, JSON.stringify(filtered));
+}
+
+export function removeHighlightElements(id: string) {
+  const marks = document.querySelectorAll(`mark[data-highlight-id="${id}"]`);
+  marks.forEach(mark => {
+    const parent = mark.parentNode;
+    if (parent) {
+      while (mark.firstChild) {
+        parent.insertBefore(mark.firstChild, mark);
+      }
+      parent.removeChild(mark);
+    }
+  });
+}
+
 export function getSelectionOffsets(root: HTMLElement, range: Range) {
   let charIndex = 0;
   let start = 0;
@@ -66,11 +85,11 @@ export function restoreHighlights(topicId: string) {
 
   const highlights = getHighlights(topicId);
   highlights.forEach(hl => {
-    applyHighlightByOffsets(root, hl.start, hl.end);
+    applyHighlightByOffsets(root, hl.start, hl.end, hl.id);
   });
 }
 
-export function applyHighlightByOffsets(root: HTMLElement, start: number, end: number) {
+export function applyHighlightByOffsets(root: HTMLElement, start: number, end: number, id: string) {
   let charIndex = 0;
   let startNode: Node | null = null;
   let startNodeOffset = 0;
@@ -110,7 +129,8 @@ export function applyHighlightByOffsets(root: HTMLElement, start: number, end: n
       range.setEnd(endNode, endNodeOffset);
       
       const mark = document.createElement('mark');
-      mark.className = 'bg-yellow-200 text-inherit rounded-sm px-[2px] py-[1px]';
+      mark.className = 'bg-yellow-200 text-inherit rounded-sm px-[2px] py-[1px] cursor-pointer transition-colors hover:bg-yellow-300';
+      mark.dataset.highlightId = id;
       
       try {
         range.surroundContents(mark);
