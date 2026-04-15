@@ -28,84 +28,73 @@ Sua constituição formal atende por $GFC=(N,E,s)$:
 Abaixo, ilustramos como as estruturas clássicas de programação são mapeadas para Grafos de Fluxo de Controle.
 
 <div class="flex flex-col lg:flex-row gap-8 items-center my-8 p-6 bg-slate-50 rounded-xl border border-slate-200">
-  <div class="flex-1 w-full">
-    <h3 class="mt-0 mb-4 text-blue-600">1. Estrutura Condicional (IF / ELSE)</h3>
+<div class="flex-1 w-full">
+<h3 class="mt-0 mb-4 text-blue-600">1. Estrutura Condicional (IF / ELSE)</h3>
 <pre><code class="language-c">if (x > 0) {
     y = 1;  // Nó 2
 } else {
     y = -1; // Nó 3
 }
 z = 2;      // Nó 4</code></pre>
-  </div>
-  <div class="flex-1 flex justify-center">
-    <svg width="200" height="250" viewBox="0 0 200 250" style="font-family: sans-serif;">
-      <defs>
-        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
-        </marker>
-      </defs>
-      <circle cx="100" cy="30" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="100" y="35" text-anchor="middle" fill="#1e293b" font-weight="bold">1</text>
-      
-      <circle cx="50" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="50" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">2</text>
-      
-      <circle cx="150" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="150" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">3</text>
-      
-      <circle cx="100" cy="170" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="100" y="175" text-anchor="middle" fill="#1e293b" font-weight="bold">4</text>
-
-      <line x1="90" y1="42" x2="58" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-      <text x="65" y="60" fill="#22c55e" font-size="12" font-weight="bold">V</text>
-      
-      <line x1="110" y1="42" x2="142" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-      <text x="135" y="60" fill="#ef4444" font-size="12" font-weight="bold">F</text>
-      
-      <line x1="58" y1="112" x2="90" y2="158" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-      <line x1="142" y1="112" x2="110" y2="158" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-    </svg>
-  </div>
+</div>
+<div class="flex-1 flex justify-center">
+<svg width="200" height="250" viewBox="0 0 200 250" style="font-family: sans-serif;">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+</marker>
+</defs>
+<circle cx="100" cy="30" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="100" y="35" text-anchor="middle" fill="#1e293b" font-weight="bold">1</text>
+<circle cx="50" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="50" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">2</text>
+<circle cx="150" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="150" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">3</text>
+<circle cx="100" cy="170" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="100" y="175" text-anchor="middle" fill="#1e293b" font-weight="bold">4</text>
+<line x1="90" y1="42" x2="58" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="65" y="60" fill="#22c55e" font-size="12" font-weight="bold">V</text>
+<line x1="110" y1="42" x2="142" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="135" y="60" fill="#ef4444" font-size="12" font-weight="bold">F</text>
+<line x1="58" y1="112" x2="90" y2="158" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="142" y1="112" x2="110" y2="158" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
+</div>
 </div>
 
 <div class="flex flex-col lg:flex-row gap-8 items-center my-8 p-6 bg-slate-50 rounded-xl border border-slate-200">
-  <div class="flex-1 w-full">
-    <h3 class="mt-0 mb-4 text-blue-600">2. Estrutura de Repetição (WHILE)</h3>
+<div class="flex-1 w-full">
+<h3 class="mt-0 mb-4 text-blue-600">2. Estrutura de Repetição (WHILE)</h3>
 <pre><code class="language-c">while (x > 0) { // Nó 1
     x--;        // Nó 2
 }
 z = 2;          // Nó 3</code></pre>
-  </div>
-  <div class="flex-1 flex justify-center">
-    <svg width="200" height="200" viewBox="0 0 200 200" style="font-family: sans-serif;">
-      <defs>
-        <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
-        </marker>
-      </defs>
-      <circle cx="100" cy="50" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="100" y="55" text-anchor="middle" fill="#1e293b" font-weight="bold">1</text>
-      
-      <circle cx="100" cy="130" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="100" y="135" text-anchor="middle" fill="#1e293b" font-weight="bold">2</text>
-      
-      <circle cx="180" cy="50" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="180" y="55" text-anchor="middle" fill="#1e293b" font-weight="bold">3</text>
-
-      <line x1="100" y1="66" x2="100" y2="114" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
-      <text x="110" y="95" fill="#22c55e" font-size="12" font-weight="bold">V</text>
-      
-      <path d="M 84 130 Q 40 130 40 90 Q 40 50 84 50" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
-      
-      <line x1="116" y1="50" x2="164" y2="50" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
-      <text x="140" y="40" fill="#ef4444" font-size="12" font-weight="bold">F</text>
-    </svg>
-  </div>
+</div>
+<div class="flex-1 flex justify-center">
+<svg width="200" height="200" viewBox="0 0 200 200" style="font-family: sans-serif;">
+<defs>
+<marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+</marker>
+</defs>
+<circle cx="100" cy="50" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="100" y="55" text-anchor="middle" fill="#1e293b" font-weight="bold">1</text>
+<circle cx="100" cy="130" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="100" y="135" text-anchor="middle" fill="#1e293b" font-weight="bold">2</text>
+<circle cx="180" cy="50" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="180" y="55" text-anchor="middle" fill="#1e293b" font-weight="bold">3</text>
+<line x1="100" y1="66" x2="100" y2="114" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+<text x="110" y="95" fill="#22c55e" font-size="12" font-weight="bold">V</text>
+<path d="M 84 130 Q 40 130 40 90 Q 40 50 84 50" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+<line x1="116" y1="50" x2="164" y2="50" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+<text x="140" y="40" fill="#ef4444" font-size="12" font-weight="bold">F</text>
+</svg>
+</div>
 </div>
 
 <div class="flex flex-col lg:flex-row gap-8 items-center my-8 p-6 bg-slate-50 rounded-xl border border-slate-200">
-  <div class="flex-1 w-full">
-    <h3 class="mt-0 mb-4 text-blue-600">3. Estrutura de Repetição (FOR)</h3>
+<div class="flex-1 w-full">
+<h3 class="mt-0 mb-4 text-blue-600">3. Estrutura de Repetição (FOR)</h3>
 <pre><code class="language-c">for (int i=0; i<5; i++) {
     // 1: i=0
     // 2: i<5
@@ -113,47 +102,38 @@ z = 2;          // Nó 3</code></pre>
     y++; // Nó 3
 }
 z = 2;   // Nó 5</code></pre>
-  </div>
-  <div class="flex-1 flex justify-center">
-    <svg width="250" height="250" viewBox="0 0 250 250" style="font-family: sans-serif;">
-      <defs>
-        <marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
-        </marker>
-      </defs>
-      <circle cx="100" cy="30" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="100" y="35" text-anchor="middle" fill="#1e293b" font-weight="bold">1</text>
-      
-      <circle cx="100" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="100" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">2</text>
-      
-      <circle cx="100" cy="170" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="100" y="175" text-anchor="middle" fill="#1e293b" font-weight="bold">3</text>
-      
-      <circle cx="40" cy="135" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="40" y="140" text-anchor="middle" fill="#1e293b" font-weight="bold">4</text>
-      
-      <circle cx="180" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="180" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">5</text>
-
-      <line x1="100" y1="46" x2="100" y2="84" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
-      
-      <line x1="100" y1="116" x2="100" y2="154" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
-      <text x="110" y="140" fill="#22c55e" font-size="12" font-weight="bold">V</text>
-      
-      <line x1="86" y1="162" x2="54" y2="143" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
-      
-      <line x1="54" y1="127" x2="86" y2="108" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
-      
-      <line x1="116" y1="100" x2="164" y2="100" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
-      <text x="140" y="90" fill="#ef4444" font-size="12" font-weight="bold">F</text>
-    </svg>
-  </div>
+</div>
+<div class="flex-1 flex justify-center">
+<svg width="250" height="250" viewBox="0 0 250 250" style="font-family: sans-serif;">
+<defs>
+<marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+</marker>
+</defs>
+<circle cx="100" cy="30" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="100" y="35" text-anchor="middle" fill="#1e293b" font-weight="bold">1</text>
+<circle cx="100" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="100" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">2</text>
+<circle cx="100" cy="170" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="100" y="175" text-anchor="middle" fill="#1e293b" font-weight="bold">3</text>
+<circle cx="40" cy="135" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="40" y="140" text-anchor="middle" fill="#1e293b" font-weight="bold">4</text>
+<circle cx="180" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="180" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">5</text>
+<line x1="100" y1="46" x2="100" y2="84" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+<line x1="100" y1="116" x2="100" y2="154" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+<text x="110" y="140" fill="#22c55e" font-size="12" font-weight="bold">V</text>
+<line x1="86" y1="162" x2="54" y2="143" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+<line x1="54" y1="127" x2="86" y2="108" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+<line x1="116" y1="100" x2="164" y2="100" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+<text x="140" y="90" fill="#ef4444" font-size="12" font-weight="bold">F</text>
+</svg>
+</div>
 </div>
 
 <div class="flex flex-col lg:flex-row gap-8 items-center my-8 p-6 bg-slate-50 rounded-xl border border-slate-200">
-  <div class="flex-1 w-full">
-    <h3 class="mt-0 mb-4 text-blue-600">4. Estrutura de Múltipla Escolha (SWITCH)</h3>
+<div class="flex-1 w-full">
+<h3 class="mt-0 mb-4 text-blue-600">4. Estrutura de Múltipla Escolha (SWITCH)</h3>
 <pre><code class="language-c">switch(x) { // Nó 1
     case 1: 
         y = 1; break; // Nó 2
@@ -163,38 +143,32 @@ z = 2;   // Nó 5</code></pre>
         y = 0;        // Nó 4
 }
 z = 2;                // Nó 5</code></pre>
-  </div>
-  <div class="flex-1 flex justify-center">
-    <svg width="250" height="250" viewBox="0 0 250 250" style="font-family: sans-serif;">
-      <defs>
-        <marker id="arrow4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
-        </marker>
-      </defs>
-      <circle cx="125" cy="30" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="125" y="35" text-anchor="middle" fill="#1e293b" font-weight="bold">1</text>
-      
-      <circle cx="50" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="50" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">2</text>
-      
-      <circle cx="125" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="125" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">3</text>
-      
-      <circle cx="200" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="200" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">4</text>
-      
-      <circle cx="125" cy="180" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-      <text x="125" y="185" text-anchor="middle" fill="#1e293b" font-weight="bold">5</text>
-
-      <line x1="114" y1="42" x2="61" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
-      <line x1="125" y1="46" x2="125" y2="84" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
-      <line x1="136" y1="42" x2="189" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
-      
-      <line x1="61" y1="112" x2="114" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
-      <line x1="125" y1="116" x2="125" y2="164" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
-      <line x1="189" y1="112" x2="136" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
-    </svg>
-  </div>
+</div>
+<div class="flex-1 flex justify-center">
+<svg width="250" height="250" viewBox="0 0 250 250" style="font-family: sans-serif;">
+<defs>
+<marker id="arrow4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+</marker>
+</defs>
+<circle cx="125" cy="30" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="125" y="35" text-anchor="middle" fill="#1e293b" font-weight="bold">1</text>
+<circle cx="50" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="50" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">2</text>
+<circle cx="125" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="125" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">3</text>
+<circle cx="200" cy="100" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="200" y="105" text-anchor="middle" fill="#1e293b" font-weight="bold">4</text>
+<circle cx="125" cy="180" r="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+<text x="125" y="185" text-anchor="middle" fill="#1e293b" font-weight="bold">5</text>
+<line x1="114" y1="42" x2="61" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+<line x1="125" y1="46" x2="125" y2="84" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+<line x1="136" y1="42" x2="189" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+<line x1="61" y1="112" x2="114" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+<line x1="125" y1="116" x2="125" y2="164" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+<line x1="189" y1="112" x2="136" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+</svg>
+</div>
 </div>
 
 ## Critérios de Execução Matemáticos: All-Nodes e All-Edges

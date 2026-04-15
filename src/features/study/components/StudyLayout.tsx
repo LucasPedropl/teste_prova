@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { TopicViewer } from './TopicViewer';
+import { PdfWorkspace } from './PdfWorkspace';
 import { topics } from '../../../data/topics';
 import { ChatWidget } from '../../chat/components/ChatWidget';
 import clsx from 'clsx';
@@ -11,7 +12,7 @@ export function StudyLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const selectedTopic = topics.find(t => t.id === selectedTopicId) || topics[0];
+  const selectedTopic = topics.find(t => t.id === selectedTopicId);
 
   return (
     <div className={clsx(
@@ -46,7 +47,11 @@ export function StudyLayout() {
       />
       
       <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10 flex flex-col gap-6">
-        <TopicViewer topic={selectedTopic} />
+        {selectedTopicId === 'pdf-viewer' ? (
+          <PdfWorkspace />
+        ) : (
+          selectedTopic && <TopicViewer topic={selectedTopic} />
+        )}
       </main>
 
       <ChatWidget />

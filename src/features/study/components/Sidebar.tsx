@@ -1,7 +1,7 @@
 import React from 'react';
 import { Topic } from '../../../data/types';
 import clsx from 'clsx';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 
 interface SidebarProps {
   topics: Topic[];
@@ -40,6 +40,35 @@ export function Sidebar({ topics, selectedTopicId, onSelectTopic, isOpen, setIsO
           <span className={clsx("transition-opacity", isCollapsed ? "lg:hidden" : "block")}>STUDYFLOW</span>
         </div>
         
+        <div className={clsx(
+          "px-6 mb-3 text-slate-500 text-[11px] uppercase tracking-[1px] whitespace-nowrap overflow-hidden transition-opacity",
+          isCollapsed ? "lg:hidden" : "block"
+        )}>
+          Ferramentas
+        </div>
+
+        <div className={clsx("px-4 mb-4 transition-all", isCollapsed ? "lg:px-2" : "")}>
+          <button
+            title={isCollapsed ? "Visualizador de PDF" : undefined}
+            onClick={() => {
+              onSelectTopic('pdf-viewer');
+              setIsOpen(false);
+            }}
+            className={clsx(
+              "w-full flex items-center rounded-md text-left transition-all",
+              isCollapsed ? "gap-2 px-3 py-2 lg:justify-center lg:py-3 lg:px-0" : "gap-2 px-3 py-2",
+              selectedTopicId === 'pdf-viewer'
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                : "text-[#cbd5e1] hover:bg-[#2d2d44]"
+            )}
+          >
+            <FileText className="w-5 h-5 shrink-0" />
+            <span className={clsx("font-medium truncate transition-opacity", isCollapsed ? "lg:hidden" : "block")}>
+              Visualizador de PDF
+            </span>
+          </button>
+        </div>
+
         <div className={clsx(
           "px-6 mb-3 text-slate-500 text-[11px] uppercase tracking-[1px] whitespace-nowrap overflow-hidden transition-opacity",
           isCollapsed ? "lg:hidden" : "block"
