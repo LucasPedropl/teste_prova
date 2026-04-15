@@ -91,57 +91,54 @@ export function restoreHighlights(topicId: string) {
 
 export function applyHighlightByOffsets(root: HTMLElement, start: number, end: number, id: string) {
   let charIndex = 0;
-  let startNode: Node | null = null;
-  let startNodeOffset = 0;
-  let endNode: Node | null = null;
-  let endNodeOffset = 0;
+  const textNodesToHighlight: { node: Text, startOffset: number, endOffset: number }[] = [];
 
   function traverse(node: Node) {
     if (node.nodeType === Node.TEXT_NODE) {
-      const len = node.textContent?.length || 0;
-      const nextCharIndex = charIndex + len;
-      
-      if (!startNode && start >= charIndex && start < nextCharIndex) {
-        startNode = node;
-        startNodeOffset = start - charIndex;
+      const text = node.textContent || '';
+      const len = text.length;
+      const nodeStart = charIndex;
+      const nodeEnd = charIndex + len;
+
+      if (nodeStart < end && nodeEnd > start) {
+        const localStart = Math.max(0, start - nodeStart);
+        const localEnd = Math.min(len, end - nodeStart);
+        
+        if (localStart < localEnd) {
+          textNodesToHighlight.push({
+            node: node as Text,
+            startOffset: localStart,
+            endOffset: localEnd
+          });
+        }
       }
-      // For end node, we want to capture the exact boundary.
-      if (!endNode && end > charIndex && end <= nextCharIndex) {
-        endNode = node;
-        endNodeOffset = end - charIndex;
-      }
-      
-      charIndex = nextCharIndex;
+      charIndex += len;
     } else if (node.nodeType === Node.ELEMENT_NODE) {
-      for (let i = 0; i < node.childNodes.length; i++) {
-        traverse(node.childNodes[i]);
-        if (startNode && endNode) break;
+      const childNodes = Array.from(node.childNodes);
+      for (let i = 0; i < childNodes.length; i++) {
+        traverse(childNodes[i]);
       }
     }
   }
 
   traverse(root);
 
-  if (startNode && endNode) {
-    const range = document.createRange();
+  // Apply in reverse order to avoid messing up offsets if multiple highlights affect the same text node
+  for (let i = textNodesToHighlight.length - 1; i >= 0; i--) {
+    const { node, startOffset, endOffset } = textNodesToHighlight[i];
+    
     try {
-      range.setStart(startNode, startNodeOffset);
-      range.setEnd(endNode, endNodeOffset);
+      const range = document.createRange();
+      range.setStart(node, startOffset);
+      range.setEnd(node, endOffset);
       
       const mark = document.createElement('mark');
       mark.className = 'bg-yellow-200 text-inherit rounded-sm px-[2px] py-[1px] cursor-pointer transition-colors hover:bg-yellow-300';
       mark.dataset.highlightId = id;
       
-      try {
-        range.surroundContents(mark);
-      } catch (e) {
-        // Fallback for selections that cross HTML element boundaries
-        const contents = range.extractContents();
-        mark.appendChild(contents);
-        range.insertNode(mark);
-      }
-    } catch (err) {
-      console.error('Failed to restore highlight', err);
+      range.surroundContents(mark);
+    } catch (e) {
+      console.error('Failed to highlight text node', e);
     }
   }
 }
