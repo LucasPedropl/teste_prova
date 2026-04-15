@@ -48,7 +48,7 @@ export function Sidebar({ topics, selectedTopicId, onSelectTopic, isOpen, setIsO
         </div>
         
         <nav className={clsx(
-          "space-y-1 overflow-y-auto flex-1 font-mono text-[13px] transition-all", 
+          "space-y-1 overflow-y-auto flex-1 font-mono text-[13px] transition-all [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]", 
           isCollapsed ? "px-4 lg:px-2" : "px-4"
         )}>
           {topics.map((topic) => (

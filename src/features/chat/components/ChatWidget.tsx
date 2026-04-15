@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Loader2, Bot } from 'lucide-react';
+import { MessageCircle, X, Send, Loader2, Bot, Maximize2, Minimize2 } from 'lucide-react';
 import { sendChatMessage, ChatMessage } from '../services/geminiService';
 import Markdown from 'react-markdown';
 import clsx from 'clsx';
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'model', text: 'Olá! Sou seu assistente de estudos em **Engenharia e Teste de Software**. Como posso ajudar com o material hoje?' }
   ]);
@@ -17,7 +18,7 @@ export function ChatWidget() {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, isMaximized]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,8 +56,11 @@ export function ChatWidget() {
       {/* Chat Window */}
       <div
         className={clsx(
-          "fixed bottom-6 right-6 w-[380px] max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-6rem)] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col z-50 transition-all duration-300 origin-bottom-right",
-          isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 pointer-events-none"
+          "fixed bg-white shadow-2xl border border-slate-200 flex flex-col z-50 transition-all duration-300 origin-bottom-right",
+          isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 pointer-events-none",
+          isMaximized 
+            ? "inset-4 sm:inset-6 md:inset-10 rounded-2xl" 
+            : "bottom-6 right-6 w-[380px] max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-6rem)] rounded-2xl"
         )}
       >
         {/* Header */}
@@ -65,12 +69,22 @@ export function ChatWidget() {
             <Bot className="w-5 h-5" />
             <h3 className="font-bold">Assistente de Estudos</h3>
           </div>
-          <button 
-            onClick={() => setIsOpen(false)}
-            className="text-blue-100 hover:text-white hover:bg-blue-700 p-1 rounded-md transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={() => setIsMaximized(!isMaximized)}
+              className="text-blue-100 hover:text-white hover:bg-blue-700 p-1.5 rounded-md transition-colors"
+              title={isMaximized ? "Restaurar tamanho" : "Maximizar"}
+            >
+              {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+            <button 
+              onClick={() => setIsOpen(false)}
+              className="text-blue-100 hover:text-white hover:bg-blue-700 p-1.5 rounded-md transition-colors"
+              title="Fechar"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Messages Area */}

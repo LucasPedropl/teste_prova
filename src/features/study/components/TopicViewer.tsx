@@ -1,6 +1,7 @@
 import React from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { Topic } from '../../../data/types';
 import { GoogleSearch } from '../../search/components/GoogleSearch';
 
@@ -32,7 +33,7 @@ export function TopicViewer({ topic }: TopicViewerProps) {
         </p>
 
         <div className="prose prose-slate prose-base sm:prose-lg max-w-none prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-a:text-blue-500 hover:prose-a:text-blue-600 prose-table:border-collapse prose-th:bg-slate-50 prose-th:p-3 sm:prose-th:p-4 prose-td:p-3 sm:prose-td:p-4 prose-td:border-t prose-th:border-t prose-th:border-slate-200 prose-td:border-slate-200 overflow-x-auto">
-          <Markdown remarkPlugins={[remarkGfm]}>
+          <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
             {topic.content}
           </Markdown>
         </div>
