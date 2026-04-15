@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "tsx scripts/generate-llms.ts",
     "dev": "vite --port=3000 --host=0.0.0.0",
+    "prebuild": "tsx scripts/generate-llms.ts",
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
