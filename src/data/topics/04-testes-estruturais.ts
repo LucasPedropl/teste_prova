@@ -1,10 +1,10 @@
 import { Topic } from '../types';
 
-export const topic7: Topic = {
+export const topic4: Topic = {
   id: 'testes-estruturais',
   title: 'Testes Estruturais (Caixa-Branca)',
   description: 'O domínio algorítmico intenso, Grafo de Fluxo de Controle e critérios de cobertura.',
-  order: 7,
+  order: 4,
   content: `
 # Testes Estruturais (Caixa-Branca): O Domínio Algorítmico Intenso
 
