@@ -47,11 +47,12 @@ export function StudyLayout() {
       />
       
       <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10 flex flex-col gap-6">
-        {selectedTopicId === 'pdf-viewer' ? (
+        <div className={clsx("w-full h-full", selectedTopicId !== 'pdf-viewer' && "hidden")}>
           <PdfWorkspace />
-        ) : (
-          selectedTopic && <TopicViewer topic={selectedTopic} />
-        )}
+        </div>
+        <div className={clsx("w-full h-full", selectedTopicId === 'pdf-viewer' && "hidden")}>
+          {selectedTopic && <TopicViewer topic={selectedTopic} />}
+        </div>
       </main>
 
       <ChatWidget />

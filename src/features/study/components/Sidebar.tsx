@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Topic } from '../../../data/types';
 import clsx from 'clsx';
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react';
@@ -14,6 +14,18 @@ interface SidebarProps {
 }
 
 export function Sidebar({ topics, selectedTopicId, onSelectTopic, isOpen, setIsOpen, isCollapsed, setIsCollapsed }: SidebarProps) {
+  const [tooltip, setTooltip] = useState<{ text: string, top: number } | null>(null);
+
+  const handleMouseEnter = (e: React.MouseEvent, text: string) => {
+    if (!isCollapsed) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltip({ text, top: rect.top + rect.height / 2 });
+  };
+
+  const handleMouseLeave = () => {
+    setTooltip(null);
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -22,6 +34,16 @@ export function Sidebar({ topics, selectedTopicId, onSelectTopic, isOpen, setIsO
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
+      )}
+
+      {/* Custom Tooltip for collapsed state */}
+      {tooltip && isCollapsed && (
+        <div 
+          className="fixed left-[80px] ml-2 px-3 py-2 bg-slate-800 text-white text-xs font-sans font-medium rounded-md shadow-xl border border-slate-700 z-[100] whitespace-nowrap pointer-events-none transform -translate-y-1/2 hidden lg:block"
+          style={{ top: tooltip.top }}
+        >
+          {tooltip.text}
+        </div>
       )}
 
       {/* Sidebar */}
@@ -49,7 +71,8 @@ export function Sidebar({ topics, selectedTopicId, onSelectTopic, isOpen, setIsO
 
         <div className={clsx("px-4 mb-4 transition-all", isCollapsed ? "lg:px-2" : "")}>
           <button
-            title={isCollapsed ? "Visualizador de PDF" : undefined}
+            onMouseEnter={(e) => handleMouseEnter(e, "Visualizador de PDF")}
+            onMouseLeave={handleMouseLeave}
             onClick={() => {
               onSelectTopic('pdf-viewer');
               setIsOpen(false);
@@ -83,7 +106,8 @@ export function Sidebar({ topics, selectedTopicId, onSelectTopic, isOpen, setIsO
           {topics.map((topic) => (
             <button
               key={topic.id}
-              title={isCollapsed ? `${topic.order}. ${topic.title}` : undefined}
+              onMouseEnter={(e) => handleMouseEnter(e, `${topic.order}. ${topic.title}`)}
+              onMouseLeave={handleMouseLeave}
               onClick={() => {
                 onSelectTopic(topic.id);
                 setIsOpen(false);
